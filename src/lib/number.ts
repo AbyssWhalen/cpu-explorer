@@ -156,7 +156,7 @@ export function decimalToIEEE754(value: number, precision: 'single' | 'double'):
 
   const expBits = precision === 'single' ? 8 : 11
 
-  const signBits = fullBits[0] as string
+  const signBits = fullBits[0]
   const exponentBits = fullBits.slice(1, 1 + expBits)
   const mantissaBits = fullBits.slice(1 + expBits)
 
