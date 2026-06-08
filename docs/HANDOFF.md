@@ -33,14 +33,14 @@
 | 模块 | 状态 | 完成者 | 日期 | 备注 |
 |------|------|--------|------|------|
 | 项目骨架 | ✅ | Claude Opus 4.6 | 2026-06-08 | 初始搭建 |
-| Number Converter | ⬜ | — | — | |
-| Instruction Codec | ⬜ | — | — | |
-| Cache Simulator | ⬜ | — | — | |
-| Pipeline Simulator | ⬜ | — | — | |
-| Datapath Viewer | ⬜ | — | — | |
-| 整体布局与路由 | ⬜ | — | — | |
-| 响应式适配 | ⬜ | — | — | |
-| 部署配置 | ⬜ | — | — | |
+| Number Converter | ✅ | Claude Opus 4.6 | 2026-06-08 | 进制转换 + 补码 + IEEE 754 |
+| Instruction Codec | ✅ | Claude Opus 4.6 | 2026-06-08 | RV32I 全部六种格式编解码 |
+| Cache Simulator | ✅ | Claude Opus 4.6 | 2026-06-08 | 直接映射/组相联/全相联，LRU/FIFO/Random |
+| Pipeline Simulator | ✅ | Claude Opus 4.6 | 2026-06-08 | 五级流水线，数据/控制冒险，forwarding |
+| Datapath Viewer | ✅ | Claude Opus 4.6 | 2026-06-08 | SVG 数据通路图 + 控制信号 |
+| 整体布局与路由 | ✅ | Claude Opus 4.6 | 2026-06-08 | React Router 导航 |
+| 响应式适配 | ⬜ | — | — | 需要移动端适配 |
+| 部署配置 | ⬜ | — | — | GitHub Pages / Vercel |
 
 ## 新增依赖记录
 
