@@ -22,7 +22,8 @@
 
 /* Config Panel */
 .cache-config {
-  background: #1e293b;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   padding: 1rem;
   border-radius: 8px;
 }
@@ -30,7 +31,7 @@
 .cache-config h3 {
   margin-bottom: 1rem;
   font-size: 0.9rem;
-  color: #94a3b8;
+  color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -41,13 +42,13 @@
   gap: 0.3rem;
   margin-bottom: 0.8rem;
   font-size: 0.85rem;
-  color: #cbd5e1;
+  color: var(--color-text-muted);
 }
 
 .cache-config select {
-  background: #0f172a;
-  color: #e2e8f0;
-  border: 1px solid #334155;
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
   border-radius: 4px;
   padding: 0.4rem;
   font-size: 0.85rem;
@@ -56,9 +57,9 @@
 .cache-info {
   margin-top: 1rem;
   padding-top: 0.8rem;
-  border-top: 1px solid #334155;
+  border-top: 1px solid var(--color-border);
   font-size: 0.8rem;
-  color: #94a3b8;
+  color: var(--color-text-muted);
 }
 
 .cache-info p {
@@ -69,21 +70,23 @@
   margin-top: 1rem;
   width: 100%;
   padding: 0.5rem;
-  background: #dc2626;
-  color: white;
+  background: var(--color-error);
+  color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.85rem;
+  transition: filter 0.2s;
 }
 
 .reset-btn:hover {
-  background: #b91c1c;
+  filter: brightness(1.1);
 }
 
 /* Access Panel */
 .cache-access {
-  background: #1e293b;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   padding: 1rem;
   border-radius: 8px;
 }
@@ -91,7 +94,7 @@
 .cache-access h3 {
   margin-bottom: 1rem;
   font-size: 0.9rem;
-  color: #94a3b8;
+  color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -104,19 +107,19 @@
 
 .manual-access input {
   flex: 1;
-  background: #0f172a;
-  color: #e2e8f0;
-  border: 1px solid #334155;
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
   border-radius: 4px;
   padding: 0.4rem 0.6rem;
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 0.85rem;
 }
 
 .manual-access select {
-  background: #0f172a;
-  color: #e2e8f0;
-  border: 1px solid #334155;
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
   border-radius: 4px;
   padding: 0.4rem;
   font-size: 0.85rem;
@@ -125,8 +128,8 @@
 .manual-access button,
 .preset-buttons button,
 .sequence-controls button {
-  background: #3b82f6;
-  color: white;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
   border: none;
   border-radius: 4px;
   padding: 0.4rem 0.8rem;
@@ -137,7 +140,7 @@
 .manual-access button:hover,
 .preset-buttons button:hover,
 .sequence-controls button:hover {
-  background: #2563eb;
+  background: var(--color-primary-hover);
 }
 
 .manual-access button:disabled,
@@ -152,7 +155,7 @@
 
 .preset-section h4 {
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: var(--color-text-muted);
   margin-bottom: 0.5rem;
 }
 
@@ -167,26 +170,26 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: var(--color-text-muted);
 }
 
 /* Address Breakdown */
 .address-breakdown {
   margin: 1rem 0;
   padding: 0.8rem;
-  background: #0f172a;
+  background: var(--color-surface-2);
   border-radius: 6px;
 }
 
 .address-breakdown h4 {
   font-size: 0.85rem;
-  color: #cbd5e1;
+  color: var(--color-text-muted);
   margin-bottom: 0.5rem;
-  font-family: monospace;
+  font-family: var(--font-mono);
 }
 
 .addr-bits {
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 1rem;
   letter-spacing: 0.05em;
   margin-bottom: 0.3rem;
@@ -196,19 +199,19 @@
   display: flex;
   gap: 1rem;
   font-size: 0.8rem;
-  font-family: monospace;
+  font-family: var(--font-mono);
 }
 
 .tag-bits {
-  color: #f59e0b;
+  color: var(--color-warning);
 }
 
 .index-bits {
-  color: #3b82f6;
+  color: var(--color-primary);
 }
 
 .offset-bits {
-  color: #22c55e;
+  color: var(--color-success);
 }
 
 .access-result {
@@ -221,15 +224,15 @@
 }
 
 .access-result.hit {
-  background: rgba(34, 197, 94, 0.2);
-  color: #22c55e;
-  border: 1px solid #22c55e;
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  border: 1px solid var(--color-success);
 }
 
 .access-result.miss {
-  background: rgba(239, 68, 68, 0.2);
-  color: #ef4444;
-  border: 1px solid #ef4444;
+  background: var(--color-error-bg);
+  color: var(--color-error);
+  border: 1px solid var(--color-error);
 }
 
 /* Stats */
@@ -237,16 +240,17 @@
   display: flex;
   gap: 1.5rem;
   padding: 0.8rem;
-  background: #0f172a;
+  background: var(--color-surface-2);
   border-radius: 6px;
   font-size: 0.85rem;
-  color: #cbd5e1;
-  font-family: monospace;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
 }
 
 /* Cache Table */
 .cache-table-container {
-  background: #1e293b;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   padding: 1rem;
   border-radius: 8px;
   overflow-x: auto;
@@ -255,7 +259,7 @@
 .cache-table-container h3 {
   margin-bottom: 1rem;
   font-size: 0.9rem;
-  color: #94a3b8;
+  color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -263,40 +267,40 @@
 .cache-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 0.8rem;
 }
 
 .cache-table th {
   padding: 0.4rem;
   text-align: center;
-  color: #94a3b8;
-  border-bottom: 1px solid #334155;
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
   font-weight: 500;
 }
 
 .cache-table td {
   padding: 0.3rem 0.4rem;
   text-align: center;
-  color: #e2e8f0;
-  border-bottom: 1px solid #1e293b;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .cache-table .set-idx {
-  color: #64748b;
+  color: var(--color-text-subtle);
   font-weight: 600;
 }
 
 .cache-table .valid {
-  color: #22c55e;
+  color: var(--color-success);
 }
 
 .cache-table .dirty {
-  color: #f59e0b;
+  color: var(--color-warning);
 }
 
 .cache-table .active-set {
-  background: rgba(59, 130, 246, 0.1);
+  background: var(--color-primary-soft);
 }
 
 .cache-table .cell-hit {
@@ -321,7 +325,8 @@
 
 /* Access Log */
 .access-log {
-  background: #1e293b;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   padding: 1rem;
   border-radius: 8px;
 }
@@ -329,7 +334,7 @@
 .access-log h3 {
   margin-bottom: 0.8rem;
   font-size: 0.9rem;
-  color: #94a3b8;
+  color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -341,18 +346,18 @@
 }
 
 .log-entry {
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 0.75rem;
   padding: 0.2rem 0.5rem;
   border-radius: 3px;
 }
 
 .log-entry.log-hit {
-  background: rgba(34, 197, 94, 0.15);
-  color: #22c55e;
+  background: var(--color-success-bg);
+  color: var(--color-success);
 }
 
 .log-entry.log-miss {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  background: var(--color-error-bg);
+  color: var(--color-error);
 }

@@ -103,14 +103,14 @@ export function CachePage() {
 
   return (
     <div className="cache-page">
-      <h2>Cache Simulator</h2>
+      <h2>Cache 模拟器</h2>
 
       <div className="cache-layout">
         {/* Config Panel */}
         <div className="cache-config">
-          <h3>Configuration</h3>
+          <h3>配置</h3>
           <label>
-            Total Size
+            总容量
             <select value={config.totalSize} onChange={e => updateConfig({ totalSize: +e.target.value })}>
               {[64, 128, 256, 512, 1024, 2048, 4096].map(v => (
                 <option key={v} value={v}>{v}B</option>
@@ -118,7 +118,7 @@ export function CachePage() {
             </select>
           </label>
           <label>
-            Block Size
+            块大小
             <select value={config.blockSize} onChange={e => updateConfig({ blockSize: +e.target.value })}>
               {[4, 8, 16, 32, 64].map(v => (
                 <option key={v} value={v}>{v}B</option>
@@ -126,68 +126,68 @@ export function CachePage() {
             </select>
           </label>
           <label>
-            Associativity
+            相联度
             <select value={config.associativity} onChange={e => updateConfig({ associativity: +e.target.value })}>
               {[1, 2, 4, 8].filter(a => a <= numSets || a === config.associativity).map(v => (
-                <option key={v} value={v}>{v === 1 ? 'Direct Mapped' : `${v}-way`}</option>
+                <option key={v} value={v}>{v === 1 ? '直接映射' : `${v} 路组相联`}</option>
               ))}
-              <option value={numSets}>Fully Associative</option>
+              <option value={numSets}>全相联</option>
             </select>
           </label>
           <label>
-            Replacement
+            替换策略
             <select value={config.replacementPolicy} onChange={e => updateConfig({ replacementPolicy: e.target.value as any })}>
-              <option value="LRU">LRU</option>
-              <option value="FIFO">FIFO</option>
-              <option value="Random">Random</option>
+              <option value="LRU">LRU（最近最少使用）</option>
+              <option value="FIFO">FIFO（先进先出）</option>
+              <option value="Random">Random（随机）</option>
             </select>
           </label>
           <label>
-            Write Policy
+            写策略
             <select value={config.writePolicy} onChange={e => updateConfig({ writePolicy: e.target.value as any })}>
-              <option value="write-back">Write-back</option>
-              <option value="write-through">Write-through</option>
+              <option value="write-back">写回（Write-back）</option>
+              <option value="write-through">写直达（Write-through）</option>
             </select>
           </label>
 
           <div className="cache-info">
-            <p>Sets: {numSets} | Ways: {config.associativity}</p>
-            <p>Address: [{tagBits}t | {indexBits}i | {offsetBits}o] = 32 bits</p>
+            <p>组数：{numSets} ｜ 路数：{config.associativity}</p>
+            <p>地址：[{tagBits} 标记 | {indexBits} 索引 | {offsetBits} 偏移] = 32 位</p>
           </div>
 
-          <button className="reset-btn" onClick={() => resetCache()}>Reset Cache</button>
+          <button className="reset-btn" onClick={() => resetCache()}>重置 Cache</button>
         </div>
 
         {/* Access Panel */}
         <div className="cache-access">
-          <h3>Memory Access</h3>
+          <h3>内存访问</h3>
           <div className="manual-access">
             <input
               type="text"
-              placeholder="Hex address (e.g. 0x1A4)"
+              placeholder="十六进制地址（如 0x1A4）"
               value={addressInput}
               onChange={e => setAddressInput(e.target.value)}
               onKeyDown={handleKeyDown}
             />
             <select value={accessType} onChange={e => setAccessType(e.target.value as AccessType)}>
-              <option value="read">Read</option>
-              <option value="write">Write</option>
+              <option value="read">读</option>
+              <option value="write">写</option>
             </select>
-            <button onClick={handleManualAccess}>Access</button>
+            <button onClick={handleManualAccess}>访问</button>
           </div>
 
           <div className="preset-section">
-            <h4>Preset Sequences</h4>
+            <h4>预设访问序列</h4>
             <div className="preset-buttons">
-              <button onClick={() => loadPreset('random')}>Random</button>
-              <button onClick={() => loadPreset('stride')}>Stride</button>
-              <button onClick={() => loadPreset('loop')}>Loop</button>
+              <button onClick={() => loadPreset('random')}>随机</button>
+              <button onClick={() => loadPreset('stride')}>跨步</button>
+              <button onClick={() => loadPreset('loop')}>循环</button>
             </div>
             {autoAddresses.length > 0 && (
               <div className="sequence-controls">
                 <span>{autoIndex}/{autoAddresses.length}</span>
-                <button onClick={stepNext} disabled={playing || autoIndex >= autoAddresses.length}>Step</button>
-                <button onClick={playAll} disabled={playing || autoIndex >= autoAddresses.length}>Play</button>
+                <button onClick={stepNext} disabled={playing || autoIndex >= autoAddresses.length}>单步</button>
+                <button onClick={playAll} disabled={playing || autoIndex >= autoAddresses.length}>播放</button>
               </div>
             )}
           </div>
@@ -195,56 +195,56 @@ export function CachePage() {
           {/* Address Breakdown */}
           {lastResult && (
             <div className="address-breakdown">
-              <h4>Address Breakdown: 0x{lastResult.address.toString(16).toUpperCase().padStart(8, '0')}</h4>
+              <h4>地址拆解：0x{lastResult.address.toString(16).toUpperCase().padStart(8, '0')}</h4>
               <div className="addr-bits">
-                <span className="tag-bits" title="Tag">
+                <span className="tag-bits" title="标记">
                   {lastResult.addressBreakdown.binary.slice(0, tagBits)}
                 </span>
-                <span className="index-bits" title="Index">
+                <span className="index-bits" title="索引">
                   {lastResult.addressBreakdown.binary.slice(tagBits, tagBits + indexBits)}
                 </span>
-                <span className="offset-bits" title="Offset">
+                <span className="offset-bits" title="偏移">
                   {lastResult.addressBreakdown.binary.slice(tagBits + indexBits)}
                 </span>
               </div>
               <div className="addr-labels">
-                <span className="tag-bits">Tag={lastResult.addressBreakdown.tag}</span>
-                <span className="index-bits">Index={lastResult.addressBreakdown.index}</span>
-                <span className="offset-bits">Offset={lastResult.addressBreakdown.offset}</span>
+                <span className="tag-bits">标记={lastResult.addressBreakdown.tag}</span>
+                <span className="index-bits">索引={lastResult.addressBreakdown.index}</span>
+                <span className="offset-bits">偏移={lastResult.addressBreakdown.offset}</span>
               </div>
               <div className={`access-result ${lastResult.hit ? 'hit' : 'miss'}`}>
-                {lastResult.hit ? 'HIT' : 'MISS'} — Set {lastResult.setIndex}, Way {lastResult.wayIndex}
-                {lastResult.evicted && ' (evicted)'}
+                {lastResult.hit ? '命中' : '缺失'} — 第 {lastResult.setIndex} 组，第 {lastResult.wayIndex} 路
+                {lastResult.evicted && '（发生替换）'}
               </div>
             </div>
           )}
 
           {/* Stats */}
           <div className="cache-stats">
-            <span>Hits: {cacheState.hits}</span>
-            <span>Misses: {cacheState.misses}</span>
-            <span>Rate: {(hitRate(cacheState) * 100).toFixed(1)}%</span>
+            <span>命中：{cacheState.hits}</span>
+            <span>缺失：{cacheState.misses}</span>
+            <span>命中率：{(hitRate(cacheState) * 100).toFixed(1)}%</span>
           </div>
         </div>
 
         {/* Cache Table */}
         <div className="cache-table-container">
-          <h3>Cache Contents</h3>
+          <h3>Cache 内容</h3>
           <table className="cache-table">
             <thead>
               <tr>
-                <th>Set</th>
+                <th>组</th>
                 {Array.from({ length: config.associativity }, (_, i) => (
-                  <th key={i} colSpan={3}>Way {i}</th>
+                  <th key={i} colSpan={3}>第 {i} 路</th>
                 ))}
               </tr>
               <tr>
                 <th></th>
                 {Array.from({ length: config.associativity }, (_, i) => (
                   <Fragment key={i}>
-                    <th>V</th>
-                    <th>D</th>
-                    <th>Tag</th>
+                    <th title="有效位 Valid">有效</th>
+                    <th title="脏位 Dirty">脏</th>
+                    <th title="标记 Tag">标记</th>
                   </Fragment>
                 ))}
               </tr>
@@ -272,7 +272,7 @@ export function CachePage() {
       {/* Access Log */}
       {cacheState.accessLog.length > 0 && (
         <div className="access-log">
-          <h3>Access Log</h3>
+          <h3>访问日志</h3>
           <div className="log-entries">
             {cacheState.accessLog.slice(-20).map((entry, i) => (
               <span key={i} className={`log-entry ${entry.hit ? 'log-hit' : 'log-miss'}`}>

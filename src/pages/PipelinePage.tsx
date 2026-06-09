@@ -18,12 +18,12 @@ export function PipelinePage() {
     try {
       const instrs = parseInstructions(code)
       if (instrs.length === 0) {
-        setError('Please enter at least one instruction')
+        setError('请至少输入一条指令')
         setResult(null)
         return
       }
       if (instrs.length > 20) {
-        setError('Maximum 20 instructions supported')
+        setError('最多支持 20 条指令')
         setResult(null)
         return
       }
@@ -31,19 +31,19 @@ export function PipelinePage() {
       setResult(res)
       setError('')
     } catch (e: any) {
-      setError(e.message || 'Simulation error')
+      setError(e.message || '模拟出错')
       setResult(null)
     }
   }, [code, config])
 
   return (
     <div className="pipeline-page">
-      <h2>Pipeline Simulator</h2>
+      <h2>流水线模拟器</h2>
       <p className="module-desc">五级流水线可视化：观察数据冒险、forwarding 和 stall</p>
 
       <div className="pipeline-controls">
         <div className="pipeline-input">
-          <label>RISC-V Assembly (one instruction per line):</label>
+          <label>RISC-V 汇编代码（每行一条指令）：</label>
           <textarea
             value={code}
             onChange={e => setCode(e.target.value)}
@@ -60,19 +60,19 @@ export function PipelinePage() {
               checked={config.forwarding}
               onChange={e => setConfig({ ...config, forwarding: e.target.checked })}
             />
-            Data Forwarding
+            数据前递（Forwarding）
           </label>
           <label>
-            Branch Handling:
+            分支处理：
             <select
               value={config.branchPrediction}
               onChange={e => setConfig({ ...config, branchPrediction: e.target.value as any })}
             >
-              <option value="none">Stall (no prediction)</option>
-              <option value="not-taken">Predict Not-Taken</option>
+              <option value="none">阻塞（不预测）</option>
+              <option value="not-taken">预测不跳转</option>
             </select>
           </label>
-          <button onClick={run} className="btn-simulate">Simulate</button>
+          <button onClick={run} className="btn-simulate">开始模拟</button>
         </div>
       </div>
 
@@ -81,17 +81,17 @@ export function PipelinePage() {
       {result && (
         <div className="pipeline-result">
           <div className="pipeline-stats">
-            <span>Total Cycles: <strong>{result.totalCycles}</strong></span>
-            <span>Instructions: <strong>{result.instructions.length}</strong></span>
-            <span>CPI: <strong>{(result.totalCycles / result.instructions.length).toFixed(2)}</strong></span>
-            <span>Hazards: <strong>{result.hazards.length}</strong></span>
+            <span>总周期数：<strong>{result.totalCycles}</strong></span>
+            <span>指令数：<strong>{result.instructions.length}</strong></span>
+            <span>CPI：<strong>{(result.totalCycles / result.instructions.length).toFixed(2)}</strong></span>
+            <span>冒险数：<strong>{result.hazards.length}</strong></span>
           </div>
 
           <div className="pipeline-timeline-wrapper">
             <table className="pipeline-timeline">
               <thead>
                 <tr>
-                  <th className="instr-header">Instruction</th>
+                  <th className="instr-header">指令</th>
                   {Array.from({ length: result.totalCycles }, (_, i) => (
                     <th key={i} className="cycle-header">CC{i + 1}</th>
                   ))}
@@ -116,15 +116,15 @@ export function PipelinePage() {
 
           {result.hazards.length > 0 && (
             <div className="pipeline-hazards">
-              <h3>Detected Hazards</h3>
+              <h3>检测到的冒险</h3>
               <ul>
                 {result.hazards.map((h, i) => (
                   <li key={i} className={`hazard-${h.resolved}`}>
-                    <span className="hazard-type">{h.type}</span>
-                    {' '}between I{h.fromInstr + 1} → I{h.toInstr + 1}
-                    {h.register && <span className="hazard-reg"> ({h.register})</span>}
+                    <span className="hazard-type">{hazardTypeLabel(h.type)}</span>
+                    {' '}于 指令{h.fromInstr + 1} → 指令{h.toInstr + 1}
+                    {h.register && <span className="hazard-reg"> （寄存器 {h.register}）</span>}
                     {' — '}
-                    <span className="hazard-resolve">{h.resolved}</span>
+                    <span className="hazard-resolve">{hazardResolveLabel(h.resolved)}</span>
                   </li>
                 ))}
               </ul>
@@ -132,14 +132,14 @@ export function PipelinePage() {
           )}
 
           <div className="pipeline-legend">
-            <span className="legend-item"><span className="cell-if">IF</span> Fetch</span>
-            <span className="legend-item"><span className="cell-id">ID</span> Decode</span>
-            <span className="legend-item"><span className="cell-ex">EX</span> Execute</span>
-            <span className="legend-item"><span className="cell-mem">MEM</span> Memory</span>
-            <span className="legend-item"><span className="cell-wb">WB</span> WriteBack</span>
-            <span className="legend-item"><span className="cell-stall">stall</span> Bubble</span>
-            <span className="legend-item"><span className="cell-flush">flush</span> Flush</span>
-            <span className="legend-item"><span className="cell-fwd">FWD</span> Forwarding</span>
+            <span className="legend-item"><span className="cell-if">IF</span> 取指</span>
+            <span className="legend-item"><span className="cell-id">ID</span> 译码</span>
+            <span className="legend-item"><span className="cell-ex">EX</span> 执行</span>
+            <span className="legend-item"><span className="cell-mem">MEM</span> 访存</span>
+            <span className="legend-item"><span className="cell-wb">WB</span> 写回</span>
+            <span className="legend-item"><span className="cell-stall">○</span> 停顿</span>
+            <span className="legend-item"><span className="cell-flush">✕</span> 冲刷</span>
+            <span className="legend-item"><span className="cell-fwd">FWD</span> 前递</span>
           </div>
         </div>
       )}
@@ -161,4 +161,20 @@ function cellContent(cell: CycleCell): string {
   if (cell.forwarding) return `${cell.stage}↗`
   if (cell.stage) return cell.stage
   return ''
+}
+
+function hazardTypeLabel(type: 'RAW' | 'load-use' | 'control'): string {
+  switch (type) {
+    case 'RAW': return 'RAW 数据冒险'
+    case 'load-use': return 'Load-Use 冒险'
+    case 'control': return '控制冒险'
+  }
+}
+
+function hazardResolveLabel(resolved: 'forwarding' | 'stall' | 'flush'): string {
+  switch (resolved) {
+    case 'forwarding': return '前递解决'
+    case 'stall': return '插入停顿'
+    case 'flush': return '冲刷流水线'
+  }
 }

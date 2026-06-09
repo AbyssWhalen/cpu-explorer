@@ -2,238 +2,234 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  padding: 1rem;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-.datapath-controls {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  flex-wrap: wrap;
+.datapath-page h2 {
+  margin-bottom: 0.25rem;
 }
 
-.datapath-controls input {
-  flex: 1;
-  min-width: 280px;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #374151;
-  border-radius: 6px;
-  background: #1f2937;
-  color: #f3f4f6;
-  font-family: 'JetBrains Mono', monospace;
+.module-desc {
+  color: var(--color-text-muted);
   font-size: 0.9rem;
 }
 
-.datapath-controls input:focus {
-  outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
-}
-
-.datapath-controls button {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 6px;
-  background: #6366f1;
-  color: white;
-  cursor: pointer;
-  font-size: 0.85rem;
-  white-space: nowrap;
-}
-
-.datapath-controls button:hover {
-  background: #4f46e5;
-}
-
-.datapath-error {
-  color: #f87171;
-  font-size: 0.85rem;
-  padding: 0.5rem;
-  background: rgba(239, 68, 68, 0.1);
-  border-radius: 4px;
-}
-
-.datapath-content {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 1.5rem;
-}
-
-@media (max-width: 1024px) {
-  .datapath-content {
-    grid-template-columns: 1fr;
-  }
-}
-
-.datapath-svg-container {
-  background: #111827;
-  border: 1px solid #374151;
-  border-radius: 8px;
-  padding: 1rem;
-  overflow: auto;
-  min-height: 500px;
-}
-
-.datapath-svg-container svg {
-  width: 100%;
-  height: auto;
-  min-height: 480px;
-}
-
-/* SVG component styles */
-.dp-component {
-  transition: opacity 0.3s;
-}
-
-.dp-component.inactive {
-  opacity: 0.3;
-}
-
-.dp-component rect,
-.dp-component circle,
-.dp-component polygon {
-  stroke-width: 2;
-  transition: fill 0.3s, stroke 0.3s;
-}
-
-.dp-component text {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  fill: #e5e7eb;
-}
-
-.dp-wire {
-  stroke-width: 2.5;
-  fill: none;
-  transition: stroke 0.3s, opacity 0.3s;
-}
-
-.dp-wire.inactive {
-  stroke: #4b5563;
-  opacity: 0.3;
-}
-
-.dp-wire.active {
-  stroke: #22c55e;
-  opacity: 1;
-}
-
-.dp-wire.data {
-  stroke: #3b82f6;
-}
-
-.dp-wire.control {
-  stroke: #f59e0b;
-  stroke-dasharray: 4 2;
-}
-
-/* Arrow markers */
-.dp-arrow {
-  fill: #22c55e;
-}
-
-/* Control signal panel */
-.control-signals-panel {
-  background: #1f2937;
-  border: 1px solid #374151;
-  border-radius: 8px;
-  padding: 1rem;
-}
-
-.control-signals-panel h3 {
-  margin: 0 0 1rem;
-  font-size: 0.95rem;
-  color: #e5e7eb;
-  border-bottom: 1px solid #374151;
-  padding-bottom: 0.5rem;
-}
-
-.signal-list {
+/* ===== Input section ===== */
+.dp-input-section {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
-.signal-item {
+.dp-input-row {
   display: flex;
-  justify-content: space-between;
+}
+
+.dp-input {
+  flex: 1;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dp-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-soft);
+}
+
+.dp-input::placeholder {
+  color: var(--color-text-subtle);
+}
+
+.dp-examples {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  padding: 0.4rem 0.6rem;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+}
+
+.dp-examples > span {
+  color: var(--color-text-muted);
+}
+
+.dp-example-btn {
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--color-border);
   border-radius: 4px;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
   font-size: 0.8rem;
-  font-family: 'JetBrains Mono', monospace;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
 }
 
-.signal-item.active {
-  background: rgba(34, 197, 94, 0.1);
-  border: 1px solid rgba(34, 197, 94, 0.3);
+.dp-example-btn:hover {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
 }
 
-.signal-item.inactive {
-  background: rgba(107, 114, 128, 0.1);
-  border: 1px solid rgba(107, 114, 128, 0.2);
+.dp-example-btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
-.signal-name {
-  color: #d1d5db;
+/* ===== Description / type badge ===== */
+.dp-description {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
 }
 
-.signal-value {
-  font-weight: 600;
-}
-
-.signal-value.on {
-  color: #22c55e;
-}
-
-.signal-value.off {
-  color: #6b7280;
-}
-
-/* Instruction type badge */
-.instr-type-badge {
+.dp-type-badge {
   display: inline-block;
-  padding: 0.25rem 0.75rem;
+  padding: 0.2rem 0.7rem;
   border-radius: 9999px;
   font-size: 0.8rem;
   font-weight: 600;
-  background: rgba(99, 102, 241, 0.2);
-  color: #a5b4fc;
-  border: 1px solid rgba(99, 102, 241, 0.4);
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
 }
 
-.examples-section {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #374151;
+/* ===== SVG diagram ===== */
+.dp-diagram-container {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1rem;
+  overflow-x: auto;
 }
 
-.examples-section h4 {
-  margin: 0 0 0.5rem;
-  font-size: 0.85rem;
-  color: #9ca3af;
+.dp-svg {
+  width: 100%;
+  height: auto;
+  min-width: 720px;
+  /* currentColor drives the shared arrow marker; pick a tone visible in both themes */
+  color: var(--color-text-muted);
 }
 
-.example-buttons {
+/* Components (rect / polygon boxes + their labels) */
+.dp-component {
+  transition: opacity 0.3s ease;
+}
+
+.dp-component.inactive {
+  opacity: 0.35;
+}
+
+.dp-component rect,
+.dp-component polygon,
+.dp-component circle {
+  fill: var(--color-surface);
+  stroke: var(--color-border);
+  stroke-width: 2;
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+.dp-component.active rect,
+.dp-component.active polygon,
+.dp-component.active circle {
+  fill: var(--color-primary-soft);
+  stroke: var(--color-primary);
+}
+
+.dp-component text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: var(--color-text);
+}
+
+.dp-component text.dp-sub {
+  font-size: 8.5px;
+  fill: var(--color-text-subtle);
+}
+
+/* Wires (lines between components) */
+.dp-path {
+  stroke-width: 2.5;
+  fill: none;
+  transition: stroke 0.3s ease, opacity 0.3s ease;
+}
+
+.dp-path.inactive {
+  stroke: var(--color-text-subtle);
+  opacity: 0.3;
+}
+
+.dp-path.active {
+  stroke: var(--color-success);
+  opacity: 1;
+}
+
+/* ===== Control signals ===== */
+.dp-signals-section {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.dp-signals-section h3 {
+  font-size: 0.95rem;
+  color: var(--color-text);
+  margin-bottom: 1rem;
+}
+
+.dp-signals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.5rem;
+}
+
+.dp-signal-item {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
 }
 
-.example-buttons button {
-  padding: 0.3rem 0.6rem;
-  border: 1px solid #4b5563;
-  border-radius: 4px;
-  background: transparent;
-  color: #d1d5db;
-  font-size: 0.75rem;
-  font-family: 'JetBrains Mono', monospace;
-  cursor: pointer;
-  transition: all 0.2s;
+.dp-signal-label {
+  color: var(--color-text-muted);
+  cursor: help;
 }
 
-.example-buttons button:hover {
-  border-color: #6366f1;
-  color: #a5b4fc;
-  background: rgba(99, 102, 241, 0.1);
+.dp-signal-value {
+  font-weight: 700;
+}
+
+.dp-signal-value.high {
+  color: var(--color-success);
+}
+
+.dp-signal-value.low {
+  color: var(--color-text-subtle);
+}
+
+.dp-signal-value.text {
+  color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+  .dp-svg {
+    min-width: 640px;
+  }
 }

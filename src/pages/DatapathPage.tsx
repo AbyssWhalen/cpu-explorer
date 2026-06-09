@@ -42,6 +42,7 @@ export function DatapathPage() {
             onChange={e => setInput(e.target.value)}
             placeholder="输入 RISC-V 汇编指令，如 add x1, x2, x3"
             className="dp-input"
+            spellCheck={false}
           />
         </div>
         <div className="dp-examples">
@@ -57,169 +58,198 @@ export function DatapathPage() {
       </div>
 
       <div className="dp-description">
-        {state.type && <span className="dp-type-badge">{state.type}-type</span>}
+        {state.type && <span className="dp-type-badge">{state.type}-型</span>}
         <span>{state.description}</span>
       </div>
 
       {/* SVG Datapath Diagram */}
       <div className="dp-diagram-container">
-        <svg viewBox="0 0 900 500" className="dp-svg">
+        <svg viewBox="0 0 940 500" className="dp-svg">
           <defs>
-            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
               <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" />
             </marker>
           </defs>
 
+          {/* ============ WIRES (drawn first, under components) ============ */}
+          {/* Main left-to-right datapath (mid band y~250-290) */}
+
+          {/* PC → 指令存储器 */}
+          <line className={pathClass('pc-to-imem')} x1="82" y1="259" x2="130" y2="259" markerEnd="url(#arrow)" />
+
+          {/* 指令存储器 → 寄存器堆 (指令字段) */}
+          <line className={pathClass('imem-to-reg')} x1="226" y1="259" x2="288" y2="259" markerEnd="url(#arrow)" />
+
+          {/* 指令存储器 → 控制器 (opcode) */}
+          <line className={pathClass('imem-to-ctrl')} x1="178" y1="222" x2="178" y2="143" />
+          <line className={pathClass('imem-to-ctrl')} x1="178" y1="143" x2="288" y2="143" markerEnd="url(#arrow)" />
+
+          {/* 指令存储器 → 立即数生成 */}
+          <line className={pathClass('imem-to-immgen')} x1="178" y1="296" x2="178" y2="383" />
+          <line className={pathClass('imem-to-immgen')} x1="178" y1="383" x2="288" y2="383" markerEnd="url(#arrow)" />
+
+          {/* 寄存器堆 rs1 → ALU 输入1 */}
+          <line className={pathClass('reg-rs1-to-alu')} x1="392" y1="250" x2="512" y2="250" markerEnd="url(#arrow)" />
+
+          {/* 寄存器堆 rs2 → ALU 多路选择器 (上输入) */}
+          <line className={pathClass('reg-rs2-to-mux-alu')} x1="392" y1="270" x2="445" y2="270" markerEnd="url(#arrow)" />
+
+          {/* 立即数生成 → ALU 多路选择器 (下输入) */}
+          <line className={pathClass('immgen-to-mux-alu')} x1="392" y1="383" x2="424" y2="383" />
+          <line className={pathClass('immgen-to-mux-alu')} x1="424" y1="383" x2="424" y2="298" />
+          <line className={pathClass('immgen-to-mux-alu')} x1="424" y1="298" x2="445" y2="298" markerEnd="url(#arrow)" />
+
+          {/* ALU 多路选择器 → ALU 输入2 */}
+          <line className={pathClass('mux-alu-to-alu')} x1="472" y1="284" x2="512" y2="284" markerEnd="url(#arrow)" />
+
+          {/* ALU → 数据存储器 (地址) */}
+          <line className={pathClass('alu-to-dmem')} x1="592" y1="262" x2="658" y2="262" markerEnd="url(#arrow)" />
+
+          {/* 寄存器堆 rs2 → 数据存储器 (写数据, store) — 底部通道 y460 */}
+          <line className={pathClass('reg-rs2-to-dmem')} x1="392" y1="288" x2="408" y2="288" />
+          <line className={pathClass('reg-rs2-to-dmem')} x1="408" y1="288" x2="408" y2="460" />
+          <line className={pathClass('reg-rs2-to-dmem')} x1="408" y1="460" x2="706" y2="460" />
+          <line className={pathClass('reg-rs2-to-dmem')} x1="706" y1="460" x2="706" y2="302" markerEnd="url(#arrow)" />
+
+          {/* 数据存储器 → 写回多路选择器 (上输入) */}
+          <line className={pathClass('dmem-to-mux-wb')} x1="754" y1="262" x2="820" y2="262" markerEnd="url(#arrow)" />
+
+          {/* ALU 结果 → 写回多路选择器 (旁路) — 轨道 y196, 竖管 x794 */}
+          <line className={pathClass('alu-to-mux-wb')} x1="592" y1="250" x2="600" y2="250" />
+          <line className={pathClass('alu-to-mux-wb')} x1="600" y1="250" x2="600" y2="196" />
+          <line className={pathClass('alu-to-mux-wb')} x1="600" y1="196" x2="794" y2="196" />
+          <line className={pathClass('alu-to-mux-wb')} x1="794" y1="196" x2="794" y2="276" />
+          <line className={pathClass('alu-to-mux-wb')} x1="794" y1="276" x2="820" y2="276" markerEnd="url(#arrow)" />
+
+          {/* 写回多路选择器 → 寄存器堆 (写回) — 最底部回流 y478, 竖管 x885 */}
+          <line className={pathClass('mux-wb-to-reg')} x1="847" y1="283" x2="885" y2="283" />
+          <line className={pathClass('mux-wb-to-reg')} x1="885" y1="283" x2="885" y2="478" />
+          <line className={pathClass('mux-wb-to-reg')} x1="885" y1="478" x2="340" y2="478" />
+          <line className={pathClass('mux-wb-to-reg')} x1="340" y1="478" x2="340" y2="314" markerEnd="url(#arrow)" />
+
+          {/* ===== 顶部 PC 更新带 (互不重叠的水平轨道) ===== */}
+
+          {/* PC → 分支加法器 (输入1) — 轨道 y52, 竖管 x66 */}
+          <line className={pathClass('pc-to-adder')} x1="66" y1="225" x2="66" y2="52" />
+          <line className={pathClass('pc-to-adder')} x1="66" y1="52" x2="442" y2="52" markerEnd="url(#arrow)" />
+
+          {/* 立即数生成 → 分支加法器 (偏移量) — 竖管 x430 */}
+          <line className={pathClass('immgen-to-adder')} x1="392" y1="372" x2="430" y2="372" />
+          <line className={pathClass('immgen-to-adder')} x1="430" y1="372" x2="430" y2="76" />
+          <line className={pathClass('immgen-to-adder')} x1="430" y1="76" x2="442" y2="76" markerEnd="url(#arrow)" />
+
+          {/* ALU zero → 与门 — 竖管 x550 */}
+          <line className={pathClass('alu-zero-to-and')} x1="550" y1="226" x2="550" y2="64" />
+          <line className={pathClass('alu-zero-to-and')} x1="550" y1="64" x2="598" y2="64" markerEnd="url(#arrow)" />
+
+          {/* 分支加法器 → PC 多路选择器 — 最顶轨道 y12, 竖管 x528 */}
+          <line className={pathClass('adder-to-mux-pc')} x1="520" y1="64" x2="528" y2="64" />
+          <line className={pathClass('adder-to-mux-pc')} x1="528" y1="64" x2="528" y2="12" />
+          <line className={pathClass('adder-to-mux-pc')} x1="528" y1="12" x2="47" y2="12" />
+          <line className={pathClass('adder-to-mux-pc')} x1="47" y1="12" x2="47" y2="40" markerEnd="url(#arrow)" />
+
+          {/* PC 多路选择器 → PC */}
+          <line className={pathClass('mux-pc-to-pc')} x1="47" y1="106" x2="47" y2="225" markerEnd="url(#arrow)" />
+
+          {/* PC+4 → 写回多路选择器 (jal 链接地址) — 轨道 y180, 竖管 x806 */}
+          <line className={pathClass('pc-plus4-to-mux-wb')} x1="76" y1="225" x2="76" y2="180" />
+          <line className={pathClass('pc-plus4-to-mux-wb')} x1="76" y1="180" x2="806" y2="180" />
+          <line className={pathClass('pc-plus4-to-mux-wb')} x1="806" y1="180" x2="806" y2="290" />
+          <line className={pathClass('pc-plus4-to-mux-wb')} x1="806" y1="290" x2="820" y2="290" markerEnd="url(#arrow)" />
+
+          {/* ALU 结果 → PC 多路选择器 (jalr 跳转目标) — 轨道 y26, 竖管 x612 */}
+          <line className={pathClass('alu-to-mux-pc')} x1="592" y1="274" x2="612" y2="274" />
+          <line className={pathClass('alu-to-mux-pc')} x1="612" y1="274" x2="612" y2="26" />
+          <line className={pathClass('alu-to-mux-pc')} x1="612" y1="26" x2="60" y2="26" />
+          <line className={pathClass('alu-to-mux-pc')} x1="60" y1="26" x2="60" y2="40" markerEnd="url(#arrow)" />
+
+          {/* 分支加法器 → 写回多路选择器 (auipc 结果) — 轨道 y104, 竖管 x782 */}
+          <line className={pathClass('adder-to-mux-wb')} x1="520" y1="76" x2="536" y2="76" />
+          <line className={pathClass('adder-to-mux-wb')} x1="536" y1="76" x2="536" y2="104" />
+          <line className={pathClass('adder-to-mux-wb')} x1="536" y1="104" x2="782" y2="104" />
+          <line className={pathClass('adder-to-mux-wb')} x1="782" y1="104" x2="782" y2="304" />
+          <line className={pathClass('adder-to-mux-wb')} x1="782" y1="304" x2="820" y2="304" markerEnd="url(#arrow)" />
+
+          {/* ============ COMPONENTS (drawn on top of wires) ============ */}
+
+          {/* PC 多路选择器 */}
+          <g className={componentClass('mux-pc')}>
+            <rect x="24" y="40" width="46" height="66" rx="4" />
+            <text x="47" y="77" textAnchor="middle" fontSize="9">MUX</text>
+          </g>
+
           {/* PC */}
           <g className={componentClass('pc')}>
-            <rect x="30" y="200" width="60" height="80" rx="4" />
-            <text x="60" y="245" textAnchor="middle">PC</text>
+            <rect x="24" y="225" width="58" height="68" rx="4" />
+            <text x="53" y="263" textAnchor="middle">PC</text>
           </g>
 
-          {/* PC → Instruction Memory */}
-          <line className={pathClass('pc-to-imem')} x1="90" y1="240" x2="140" y2="240" markerEnd="url(#arrow)" />
-
-          {/* Instruction Memory */}
+          {/* 指令存储器 */}
           <g className={componentClass('imem')}>
-            <rect x="140" y="190" width="100" height="100" rx="4" />
-            <text x="190" y="235" textAnchor="middle">Instruction</text>
-            <text x="190" y="255" textAnchor="middle">Memory</text>
+            <rect x="130" y="222" width="96" height="74" rx="4" />
+            <text x="178" y="256" textAnchor="middle">指令存储器</text>
+            <text x="178" y="272" textAnchor="middle" className="dp-sub">IMEM</text>
           </g>
 
-          {/* IMEM → Control */}
-          <line className={pathClass('imem-to-ctrl')} x1="190" y1="190" x2="190" y2="90" />
-          <line className={pathClass('imem-to-ctrl')} x1="190" y1="90" x2="250" y2="90" markerEnd="url(#arrow)" />
-
-          {/* Control Unit */}
+          {/* 控制器 */}
           <g className={componentClass('control')}>
-            <rect x="250" y="60" width="120" height="60" rx="4" />
-            <text x="310" y="95" textAnchor="middle">Control</text>
+            <rect x="288" y="120" width="120" height="46" rx="4" />
+            <text x="348" y="140" textAnchor="middle">控制器</text>
+            <text x="348" y="156" textAnchor="middle" className="dp-sub">Control</text>
           </g>
 
-          {/* IMEM → Register File */}
-          <line className={pathClass('imem-to-reg')} x1="240" y1="240" x2="310" y2="240" markerEnd="url(#arrow)" />
-
-          {/* IMEM → Imm Gen */}
-          <line className={pathClass('imem-to-immgen')} x1="190" y1="290" x2="190" y2="345" />
-          <line className={pathClass('imem-to-immgen')} x1="190" y1="345" x2="290" y2="345" markerEnd="url(#arrow)" />
-
-          {/* Imm Gen */}
-          <g className={componentClass('imm-gen')}>
-            <rect x="290" y="320" width="80" height="50" rx="4" />
-            <text x="330" y="350" textAnchor="middle">Imm Gen</text>
-          </g>
-
-          {/* Register File */}
+          {/* 寄存器堆 */}
           <g className={componentClass('registers')}>
-            <rect x="310" y="190" width="100" height="100" rx="4" />
-            <text x="360" y="235" textAnchor="middle">Register</text>
-            <text x="360" y="255" textAnchor="middle">File</text>
+            <rect x="288" y="222" width="104" height="92" rx="4" />
+            <text x="340" y="266" textAnchor="middle">寄存器堆</text>
+            <text x="340" y="282" textAnchor="middle" className="dp-sub">Registers</text>
           </g>
 
-          {/* Register rs1 → ALU */}
-          <line className={pathClass('reg-rs1-to-alu')} x1="410" y1="220" x2="470" y2="220" markerEnd="url(#arrow)" />
+          {/* 立即数生成 */}
+          <g className={componentClass('imm-gen')}>
+            <rect x="288" y="360" width="104" height="46" rx="4" />
+            <text x="340" y="380" textAnchor="middle">立即数生成</text>
+            <text x="340" y="396" textAnchor="middle" className="dp-sub">ImmGen</text>
+          </g>
 
-          {/* Register rs2 → MUX ALU */}
-          <line className={pathClass('reg-rs2-to-mux-alu')} x1="410" y1="260" x2="470" y2="260" markerEnd="url(#arrow)" />
-
-          {/* Imm Gen → MUX ALU */}
-          <line className={pathClass('immgen-to-mux-alu')} x1="370" y1="345" x2="480" y2="345" />
-          <line className={pathClass('immgen-to-mux-alu')} x1="480" y1="345" x2="480" y2="280" markerEnd="url(#arrow)" />
-
-          {/* MUX ALUSrc */}
+          {/* ALU 多路选择器 */}
           <g className={componentClass('mux-alu-src')}>
-            <polygon points="470,210 470,280 500,270 500,220" />
-            <text x="480" y="250" fontSize="9" textAnchor="middle">M</text>
+            <polygon points="445,256 472,268 472,300 445,312" />
+            <text x="456" y="288" textAnchor="middle" fontSize="9">MUX</text>
           </g>
-
-          {/* MUX → ALU */}
-          <line className={pathClass('mux-alu-to-alu')} x1="500" y1="240" x2="540" y2="240" markerEnd="url(#arrow)" />
 
           {/* ALU */}
           <g className={componentClass('alu')}>
-            <polygon points="540,200 540,280 600,260 600,220" />
-            <text x="565" y="245" textAnchor="middle">ALU</text>
+            <polygon points="512,226 512,262 528,274 512,286 512,322 592,300 592,248" />
+            <text x="548" y="278" textAnchor="middle">ALU</text>
           </g>
 
-          {/* ALU → Data Memory */}
-          <line className={pathClass('alu-to-dmem')} x1="600" y1="240" x2="660" y2="240" markerEnd="url(#arrow)" />
-
-          {/* Data Memory */}
+          {/* 数据存储器 */}
           <g className={componentClass('dmem')}>
-            <rect x="660" y="190" width="100" height="100" rx="4" />
-            <text x="710" y="235" textAnchor="middle">Data</text>
-            <text x="710" y="255" textAnchor="middle">Memory</text>
+            <rect x="658" y="222" width="96" height="80" rx="4" />
+            <text x="706" y="258" textAnchor="middle">数据存储器</text>
+            <text x="706" y="274" textAnchor="middle" className="dp-sub">DMEM</text>
           </g>
 
-          {/* Register rs2 → Data Memory (Store) */}
-          <line className={pathClass('reg-rs2-to-dmem')} x1="410" y1="270" x2="440" y2="380" />
-          <line className={pathClass('reg-rs2-to-dmem')} x1="440" y1="380" x2="710" y2="380" />
-          <line className={pathClass('reg-rs2-to-dmem')} x1="710" y1="380" x2="710" y2="290" markerEnd="url(#arrow)" />
-
-          {/* Data Memory → MUX WB */}
-          <line className={pathClass('dmem-to-mux-wb')} x1="760" y1="240" x2="800" y2="240" markerEnd="url(#arrow)" />
-
-          {/* ALU result → MUX WB bypass */}
-          <line className={pathClass('alu-to-mux-wb')} x1="600" y1="225" x2="630" y2="170" />
-          <line className={pathClass('alu-to-mux-wb')} x1="630" y1="170" x2="810" y2="170" />
-          <line className={pathClass('alu-to-mux-wb')} x1="810" y1="170" x2="810" y2="220" markerEnd="url(#arrow)" />
-
-          {/* MUX WB (MemtoReg) */}
+          {/* 写回多路选择器 */}
           <g className={componentClass('mux-wb')}>
-            <polygon points="800,220 800,270 830,260 830,230" />
-            <text x="810" y="250" fontSize="9" textAnchor="middle">M</text>
+            <polygon points="820,250 847,262 847,304 820,316" />
+            <text x="832" y="287" textAnchor="middle" fontSize="9">MUX</text>
           </g>
 
-          {/* MUX WB → Register File (writeback) */}
-          <line className={pathClass('mux-wb-to-reg')} x1="830" y1="245" x2="860" y2="245" />
-          <line className={pathClass('mux-wb-to-reg')} x1="860" y1="245" x2="860" y2="430" />
-          <line className={pathClass('mux-wb-to-reg')} x1="860" y1="430" x2="360" y2="430" />
-          <line className={pathClass('mux-wb-to-reg')} x1="360" y1="430" x2="360" y2="290" markerEnd="url(#arrow)" />
-
-          {/* Branch Adder */}
+          {/* 分支加法器 */}
           <g className={componentClass('branch-adder')}>
-            <rect x="400" y="60" width="70" height="40" rx="4" />
-            <text x="435" y="85" textAnchor="middle" fontSize="10">Add</text>
+            <rect x="442" y="38" width="78" height="52" rx="4" />
+            <text x="481" y="60" textAnchor="middle">加法器</text>
+            <text x="481" y="76" textAnchor="middle" className="dp-sub">Add</text>
           </g>
 
-          {/* PC → Branch Adder */}
-          <line className={pathClass('pc-to-adder')} x1="60" y1="200" x2="60" y2="80" />
-          <line className={pathClass('pc-to-adder')} x1="60" y1="80" x2="400" y2="80" markerEnd="url(#arrow)" />
-
-          {/* Imm Gen → Branch Adder */}
-          <line className={pathClass('immgen-to-adder')} x1="330" y1="320" x2="330" y2="70" />
-          <line className={pathClass('immgen-to-adder')} x1="330" y1="70" x2="400" y2="70" markerEnd="url(#arrow)" />
-
-          {/* AND gate */}
+          {/* 与门 */}
           <g className={componentClass('and-gate')}>
-            <rect x="540" y="60" width="50" height="40" rx="4" />
-            <text x="565" y="85" textAnchor="middle" fontSize="10">AND</text>
+            <rect x="598" y="44" width="54" height="40" rx="4" />
+            <text x="625" y="62" textAnchor="middle">与门</text>
+            <text x="625" y="77" textAnchor="middle" className="dp-sub">AND</text>
           </g>
-
-          {/* ALU Zero → AND */}
-          <line className={pathClass('alu-zero-to-and')} x1="580" y1="200" x2="580" y2="100" markerEnd="url(#arrow)" />
-
-          {/* Branch Adder → MUX PC */}
-          <line className={pathClass('adder-to-mux-pc')} x1="470" y1="80" x2="540" y2="80" />
-
-          {/* MUX PC */}
-          <g className={componentClass('mux-pc')}>
-            <rect x="620" y="15" width="50" height="30" rx="4" />
-            <text x="645" y="35" textAnchor="middle" fontSize="9">MUX</text>
-          </g>
-
-          {/* AND/Adder → MUX PC → PC */}
-          <line className={pathClass('adder-to-mux-pc')} x1="590" y1="60" x2="620" y2="30" markerEnd="url(#arrow)" />
-          <line className={pathClass('mux-pc-to-pc')} x1="620" y1="30" x2="30" y2="30" />
-          <line className={pathClass('mux-pc-to-pc')} x1="30" y1="30" x2="30" y2="200" markerEnd="url(#arrow)" />
-
-          {/* PC+4 → MUX WB (for JAL/JALR) */}
-          <line className={pathClass('pc-plus4-to-mux-wb')} x1="90" y1="220" x2="120" y2="150" />
-          <line className={pathClass('pc-plus4-to-mux-wb')} x1="120" y1="150" x2="800" y2="150" />
-          <line className={pathClass('pc-plus4-to-mux-wb')} x1="800" y1="150" x2="800" y2="220" markerEnd="url(#arrow)" />
-
-          {/* ALU → MUX PC (for JALR) */}
-          <line className={pathClass('alu-to-mux-pc')} x1="600" y1="210" x2="630" y2="45" markerEnd="url(#arrow)" />
         </svg>
       </div>
 

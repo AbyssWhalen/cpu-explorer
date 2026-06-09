@@ -8,14 +8,14 @@
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
-  color: #e2e8f0;
+  color: var(--color-text);
 }
 
 .tab-bar {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 1.5rem;
-  border-bottom: 1px solid #334155;
+  border-bottom: 1px solid var(--color-border);
   padding-bottom: 0.5rem;
 }
 
@@ -23,7 +23,7 @@
   padding: 0.5rem 1rem;
   border: none;
   background: transparent;
-  color: #94a3b8;
+  color: var(--color-text-muted);
   cursor: pointer;
   border-radius: 6px 6px 0 0;
   font-size: 0.9rem;
@@ -31,18 +31,19 @@
 }
 
 .tab-bar button:hover {
-  color: #e2e8f0;
-  background: #1e293b;
+  color: var(--color-text);
+  background: var(--color-surface);
 }
 
 .tab-bar button.active {
-  color: #38bdf8;
-  background: #1e293b;
-  border-bottom: 2px solid #38bdf8;
+  color: var(--color-primary);
+  background: var(--color-surface);
+  border-bottom: 2px solid var(--color-primary);
 }
 
 .panel {
-  background: #1e293b;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 1.5rem;
 }
@@ -54,36 +55,36 @@
 .input-group label {
   display: block;
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: var(--color-text-muted);
   margin-bottom: 0.4rem;
 }
 
 .text-input {
   width: 100%;
   padding: 0.6rem 1rem;
-  background: #0f172a;
-  border: 1px solid #334155;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
-  color: #e2e8f0;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--color-text);
+  font-family: var(--font-mono);
   font-size: 0.95rem;
   outline: none;
   transition: border-color 0.2s;
 }
 
 .text-input:focus {
-  border-color: #38bdf8;
+  border-color: var(--color-primary);
 }
 
 .text-input::placeholder {
-  color: #475569;
+  color: var(--color-text-subtle);
 }
 
 .error-msg {
-  color: #f87171;
+  color: var(--color-error);
   font-size: 0.85rem;
   padding: 0.5rem;
-  background: #451a1a;
+  background: var(--color-error-bg);
   border-radius: 6px;
   margin-bottom: 1rem;
 }
@@ -100,34 +101,34 @@
   align-items: center;
   gap: 1rem;
   padding: 0.5rem 0.75rem;
-  background: #0f172a;
+  background: var(--color-surface-2);
   border-radius: 6px;
 }
 
 .result-label {
   min-width: 5rem;
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: var(--color-text-muted);
   flex-shrink: 0;
 }
 
 .result-value {
-  font-family: 'JetBrains Mono', monospace;
-  color: #e2e8f0;
+  font-family: var(--font-mono);
+  color: var(--color-text);
   word-break: break-all;
 }
 
 .hint {
   margin-top: 1.5rem;
   padding: 0.75rem 1rem;
-  background: #0f172a;
+  background: var(--color-surface-2);
   border-radius: 6px;
-  border-left: 3px solid #38bdf8;
+  border-left: 3px solid var(--color-primary);
 }
 
 .hint p {
   font-size: 0.8rem;
-  color: #64748b;
+  color: var(--color-text-subtle);
   margin: 0.25rem 0;
 }
 
@@ -140,15 +141,15 @@
 }
 
 .bit-width-selector span {
-  color: #94a3b8;
+  color: var(--color-text-muted);
   font-size: 0.85rem;
 }
 
 .bit-width-selector button {
   padding: 0.35rem 0.75rem;
-  border: 1px solid #334155;
+  border: 1px solid var(--color-border);
   background: transparent;
-  color: #94a3b8;
+  color: var(--color-text-muted);
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.8rem;
@@ -156,9 +157,9 @@
 }
 
 .bit-width-selector button.active {
-  background: #38bdf8;
-  color: #0f172a;
-  border-color: #38bdf8;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border-color: var(--color-primary);
 }
 
 .two-col {
@@ -175,28 +176,28 @@
 
 .col h4 {
   font-size: 0.9rem;
-  color: #cbd5e1;
+  color: var(--color-text-muted);
   margin-bottom: 1rem;
 }
 
 .bit-count {
   font-size: 0.75rem;
-  color: #64748b;
+  color: var(--color-text-subtle);
   margin-left: 0.5rem;
 }
 
 .bit-string {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   letter-spacing: 1px;
 }
 
 .sign-bit {
-  color: #f87171;
+  color: var(--color-error);
   font-weight: 700;
 }
 
 .data-bits {
-  color: #e2e8f0;
+  color: var(--color-text);
 }
 
 /* IEEE 754 Panel */
@@ -216,9 +217,9 @@
 .mode-selector button,
 .precision-selector button {
   padding: 0.4rem 0.75rem;
-  border: 1px solid #334155;
+  border: 1px solid var(--color-border);
   background: transparent;
-  color: #94a3b8;
+  color: var(--color-text-muted);
   cursor: pointer;
   font-size: 0.8rem;
   transition: all 0.2s;
@@ -236,9 +237,9 @@
 
 .mode-selector button.active,
 .precision-selector button.active {
-  background: #38bdf8;
-  color: #0f172a;
-  border-color: #38bdf8;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border-color: var(--color-primary);
 }
 
 .ieee-result {
@@ -250,7 +251,7 @@
   gap: 2px;
   margin-bottom: 1.5rem;
   padding: 1rem;
-  background: #0f172a;
+  background: var(--color-surface-2);
   border-radius: 8px;
   overflow-x: auto;
 }
@@ -263,42 +264,42 @@
 }
 
 .sign-field {
-  background: #3b1a1a;
-  border: 1px solid #f87171;
+  background: var(--color-error-bg);
+  border: 1px solid var(--color-error);
   flex: 0 0 auto;
 }
 
 .exponent-field {
-  background: #1a2a3b;
-  border: 1px solid #38bdf8;
+  background: var(--color-primary-soft);
+  border: 1px solid var(--color-primary);
   flex: 1;
 }
 
 .mantissa-field {
-  background: #1a3b2a;
-  border: 1px solid #4ade80;
+  background: var(--color-success-bg);
+  border: 1px solid var(--color-success);
   flex: 2;
 }
 
 .field-label {
   font-size: 0.7rem;
-  color: #94a3b8;
+  color: var(--color-text-muted);
   margin-bottom: 0.25rem;
 }
 
 .field-bits {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 0.85rem;
-  color: #e2e8f0;
+  color: var(--color-text);
   word-break: break-all;
 }
 
 .field-value {
   font-size: 0.75rem;
-  color: #64748b;
+  color: var(--color-text-subtle);
   margin-top: 0.25rem;
 }
 
-.sign-field .field-bits { color: #f87171; }
-.exponent-field .field-bits { color: #38bdf8; }
-.mantissa-field .field-bits { color: #4ade80; }
+.sign-field .field-bits { color: var(--color-error); }
+.exponent-field .field-bits { color: var(--color-primary); }
+.mantissa-field .field-bits { color: var(--color-success); }
