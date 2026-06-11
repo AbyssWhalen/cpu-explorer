@@ -9,6 +9,7 @@ import {
   type BitWidth,
   type IEEE754Result,
 } from '../lib/number'
+import '../styles/number-system.css'
 
 type Tab = 'radix' | 'complement' | 'ieee754'
 
@@ -17,7 +18,10 @@ export function NumberSystemPage() {
 
   return (
     <div className="module-container">
-      <h2>进制与编码</h2>
+      <div className="module-head">
+        <h2>进制与编码</h2>
+        <p className="module-intro">进制互转、原码/反码/补码、IEEE 754 浮点编码 — 输入即时换算</p>
+      </div>
       <div className="tab-bar">
         <button className={tab === 'radix' ? 'active' : ''} onClick={() => setTab('radix')}>
           进制转换
