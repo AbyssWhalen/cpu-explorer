@@ -11,3 +11,6 @@ Thumbs.db
 
 # TypeScript incremental build cache
 *.tsbuildinfo
+
+# AI 接力开发说明，仅本地保留，不上传
+CLAUDE.md
